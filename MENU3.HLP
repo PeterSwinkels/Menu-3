@@ -1,0 +1,9 @@
+ Control + G = Get group list.
+ Control + I = Change program information
+ Control + N = Add new program/group to menu.
+ Control + Q = Quit Menu3.
+      Delete = Remove program.
+       Enter = Start program.
+      Escape = Go to pulldown menus.
+          F1 = Help.
+          F2 = Set directory for Menu3.
