@@ -1,6 +1,7 @@
  Control + G = Get group list.
  Control + I = Change program information
- Control + N = Add new program/group to menu.
+ Control + N = Add new program or
+               (while in group list) group.
  Control + Q = Quit Menu3.
       Delete = Remove program.
        Enter = Start program.
