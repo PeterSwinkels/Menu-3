@@ -19,7 +19,7 @@ DECLARE SUB DisplayPrograms (SelectedProgram)
 DECLARE SUB DisplaySelection (SelectedProgram)
 DECLARE SUB DisplayWait ()
 DECLARE SUB DrawBox (x, y, Wdth, Height, Shadow)
-DECLARE SUB ExecuteProgram (MenuItemDirectory AS STRING, MenuItemCommand AS STRING)
+DECLARE SUB ExecuteProgram (MenuItemDirectory AS STRING, MenuItemCommand AS STRING, ProgramDirectory AS STRING)
 DECLARE SUB GetPulldownMenus (MenuText() AS STRING, MenuWidth(), MenuItemCount())
 DECLARE SUB Initialize ()
 DECLARE SUB LoadGroups (CurrentGroup AS STRING, ProgramDirectory AS STRING)
@@ -245,7 +245,7 @@ DIM Row AS INTEGER
  IF Shadow THEN LOCATE , y + 2: PRINT STRING$(Wdth + 2, "±")
 END SUB
 
-SUB ExecuteProgram (MenuItemDirectory AS STRING, MenuItemCommand AS STRING)
+SUB ExecuteProgram (MenuItemDirectory AS STRING, MenuItemCommand AS STRING, ProgramDirectory AS STRING)
 DIM FileH AS INTEGER
 DIM MenuItemExecutable AS STRING
 
@@ -263,7 +263,7 @@ DIM MenuItemExecutable AS STRING
     SHELL MenuItemCommand
    END IF
   Initialize
-  ChangeDirectory MenuItemDirectory
+  ChangeDirectory ProgramDirectory
  END IF
 END SUB
 
@@ -385,11 +385,12 @@ DIM Group AS INTEGER
 
  FileH = FREEFILE
  OPEN ProgramDirectory + "Groups.dat" FOR BINARY LOCK READ WRITE AS FileH
-  IF FileH > FREEFILE THEN
+  IF FREEFILE > FileH THEN
    IF LOF(FileH) = 0 THEN
     CLOSE FileH
     OPEN ProgramDirectory + "Groups.dat" FOR OUTPUT LOCK READ WRITE AS FileH
      PRINT #FileH, CHR$(LEN(DEFAULTGROUP$)); DEFAULTGROUP$;
+     Groups(UBOUND(Groups)) = DEFAULTGROUP$
    ELSE
     FOR Group = LBOUND(Groups) TO UBOUND(Groups)
      Groups(Group) = INPUT$(ASC(INPUT$(1, FileH)), FileH)
@@ -514,7 +515,7 @@ DIM SelectedProgram AS INTEGER
         RequestItemInformation SelectedProgram, CurrentGroup, ProgramDirectory, FALSE
         EXIT DO
        CASE CHR$(13)
-        ExecuteProgram MenuItemDirectories(SelectedProgram), MenuItemCommands(SelectedProgram)
+        ExecuteProgram MenuItemDirectories(SelectedProgram), MenuItemCommands(SelectedProgram), ProgramDirectory
         EXIT DO
       END SELECT
      END IF
